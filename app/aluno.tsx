@@ -1,13 +1,16 @@
-import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
 import {
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 export default function DashboardAluno() {
+  const [mostrarHistorico, setMostrarHistorico] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
@@ -21,17 +24,34 @@ export default function DashboardAluno() {
       </View>
 
       <ScrollView style={styles.mainContainer}>
-        {/* Ficha de medidas (Modificar) */}
-      {/*  <Text style={styles.sectionTitle}>Histórico de Medidas</Text>
-        <View style={styles.card}>
-          <Text style={{color:'#fff', marginBottom: 5}}>01/01 - Peso: 70kg, Cintura: 80cm, Quadril: 90cm, Tórax: 95cm</Text>
-          <Text style={{color:'#fff', marginBottom: 5}}>01/02 - Peso: 71kg, Cintura: 81cm, Quadril: 91cm, Tórax: 96cm</Text>
-          <Text style={{color:'#fff'}}>01/03 - Peso: 72kg, Cintura: 82cm, Quadril: 92cm, Tórax: 97cm</Text>
-        </View>
-        <TouchableOpacity style={styles.registrarButton}>
-          <Text style={styles.registrarButtonText}>Registre novas medidas</Text>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Histórico de Medidas</Text>
+        <TouchableOpacity 
+          style={styles.toggleButton}
+          onPress={() => setMostrarHistorico(!mostrarHistorico)}
+        >
+          <Ionicons 
+            name={mostrarHistorico ? "chevron-up" : "chevron-down"} 
+            size={24} 
+            color="#ffc107" 
+          />
         </TouchableOpacity>
-        <View style={styles.divider} /> */}
+      </View>
+      
+      {/* Renderização do histórico de medidas */}
+      {mostrarHistorico && (
+        <View>
+          <View style={styles.card}>
+            <Text style={styles.medidasText}>01/01 - Peso: 70kg, Cintura: 80cm, Quadril: 90cm, Tórax: 95cm</Text>
+            <Text style={styles.medidasText}>01/02 - Peso: 71kg, Cintura: 81cm, Quadril: 91cm, Tórax: 96cm</Text>
+            <Text style={styles.medidasText}>01/03 - Peso: 72kg, Cintura: 82cm, Quadril: 92cm, Tórax: 97cm</Text>
+          </View>
+          <TouchableOpacity style={styles.registrarButton}>
+            <Text style={styles.registrarButtonText}>Registre novas medidas</Text>
+          </TouchableOpacity>
+          <View style={styles.divider} />
+        </View>
+      )}
 
         <Text style={styles.sectionTitle}>Ficha de Treino</Text>
         <View style={styles.card}>
@@ -91,11 +111,28 @@ const styles = StyleSheet.create({
   mainContainer: {
     padding: 20,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
   sectionTitle: {
     color: '#ffc107',
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 15,
+  },
+  toggleButton: {
+    padding: 5,
+  },
+  medidasText: {
+    color: '#fff',
+    marginBottom: 5,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#333',
+    marginVertical: 20,
   },
   registrarButton: {
     backgroundColor: '#ffc107',
