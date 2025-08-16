@@ -1,6 +1,6 @@
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -14,6 +14,8 @@ import {
 const DashboardInstrutor = () => {
   const screenWidth = Dimensions.get('window').width;
   const isSmallScreen = screenWidth < 400;
+  
+  const [filtroAtivo, setFiltroAtivo] = useState('todas'); 
 
   return (
     <View style={styles.container}>
@@ -54,55 +56,155 @@ const DashboardInstrutor = () => {
         </View>
 
         {/* Acrescentar Fichas */}
-        <Text style={styles.sectionTitle}>Fichas Criadas</Text>
-        <View style={styles.accordionItem}>
-          <View style={styles.accordionHeader}>
-            <Text style={styles.accordionTitle}>Ficha de Aluno Exemplo - Início: 2024-01-01</Text>
-            <MaterialIcons name="keyboard-arrow-down" size={24} color="#000" />
-          </View>
-          <View style={styles.accordionContent}>
-            <View style={styles.diaContainer}>
-              <View style={styles.diaHeader}>
-                <Text style={styles.diaTexto}>Segunda</Text>
-                <Text style={styles.grupoTexto}> - Peito e Bíceps</Text>
-              </View>
-              <View style={styles.table}>
-                <View style={styles.tableHeader}>
-                  <Text style={styles.headerCell}>Exercício</Text>
-                  <Text style={styles.headerCell}>Grupo Muscular</Text>
-                  <Text style={styles.headerCell}>Séries</Text>
-                  <Text style={styles.headerCell}>Repetições</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCell}>Supino Reto</Text>
-                  <Text style={styles.tableCell}>Peitoral</Text>
-                  <Text style={styles.tableCell}>3</Text>
-                  <Text style={styles.tableCell}>12</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableCell}>Rosca Direta</Text>
-                  <Text style={styles.tableCell}>Bíceps</Text>
-                  <Text style={styles.tableCell}>3</Text>
-                  <Text style={styles.tableCell}>10</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.buttonsContainer}>
-              <TouchableOpacity style={[styles.button, styles.editarButton]}>
-                <Text style={styles.buttonText}>Editar Ficha</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.excluirButton]}>
-                <Text style={styles.buttonText}>Excluir Ficha</Text>
-              </TouchableOpacity>
-            </View>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Fichas Criadas</Text>
+          
+          <View style={styles.filtroContainer}>
+            <TouchableOpacity 
+              style={[styles.filtroButton, filtroAtivo === 'todas' && styles.filtroAtivo]}
+              onPress={() => setFiltroAtivo('todas')}
+            >
+              <Text style={[styles.filtroText, filtroAtivo === 'todas' && styles.filtroTextoAtivo]}>Todas</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.filtroButton, filtroAtivo === 'recentes' && styles.filtroAtivo]}
+              onPress={() => setFiltroAtivo('recentes')}
+            >
+              <Text style={[styles.filtroText, filtroAtivo === 'recentes' && styles.filtroTextoAtivo]}>Recentes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.filtroButton, filtroAtivo === 'antigas' && styles.filtroAtivo]}
+              onPress={() => setFiltroAtivo('antigas')}
+            >
+              <Text style={[styles.filtroText, filtroAtivo === 'antigas' && styles.filtroTextoAtivo]}>Antigas</Text>
+            </TouchableOpacity>
           </View>
         </View>
+        {(filtroAtivo === 'todas' || filtroAtivo === 'recentes') && (
+          <View style={styles.accordionItem}>
+            <View style={styles.accordionHeader}>
+              <Text style={styles.accordionTitle}>Ficha de Aluno Exemplo - Início: 2024-01-01</Text>
+              <MaterialIcons name="keyboard-arrow-down" size={24} color="#000" />
+            </View>
+            <View style={styles.accordionContent}>
+              <View style={styles.diaContainer}>
+                <View style={styles.diaHeader}>
+                  <Text style={styles.diaTexto}>Segunda</Text>
+                  <Text style={styles.grupoTexto}> - Peito e Bíceps</Text>
+                </View>
+                <View style={styles.table}>
+                  <View style={styles.tableHeader}>
+                    <Text style={styles.headerCell}>Exercício</Text>
+                    <Text style={styles.headerCell}>Grupo Muscular</Text>
+                    <Text style={styles.headerCell}>Séries</Text>
+                    <Text style={styles.headerCell}>Repetições</Text>
+                  </View>
+                  <View style={styles.tableRow}>
+                    <Text style={styles.tableCell}>Supino Reto</Text>
+                    <Text style={styles.tableCell}>Peitoral</Text>
+                    <Text style={styles.tableCell}>3</Text>
+                    <Text style={styles.tableCell}>12</Text>
+                  </View>
+                  <View style={styles.tableRow}>
+                    <Text style={styles.tableCell}>Rosca Direta</Text>
+                    <Text style={styles.tableCell}>Bíceps</Text>
+                    <Text style={styles.tableCell}>3</Text>
+                    <Text style={styles.tableCell}>10</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.buttonsContainer}>
+                <TouchableOpacity style={[styles.button, styles.editarButton]}>
+                  <Text style={styles.buttonText}>Editar Ficha</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.excluirButton]}>
+                  <Text style={styles.buttonText}>Excluir Ficha</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
+        
+        {(filtroAtivo === 'todas' || filtroAtivo === 'antigas') && (
+          <View style={styles.accordionItem}>
+            <View style={styles.accordionHeader}>
+              <Text style={styles.accordionTitle}>Ficha de Aluno Exemplo - Início: 2023-06-01</Text>
+              <MaterialIcons name="keyboard-arrow-down" size={24} color="#000" />
+            </View>
+            <View style={styles.accordionContent}>
+              <View style={styles.diaContainer}>
+                <View style={styles.diaHeader}>
+                  <Text style={styles.diaTexto}>Quarta</Text>
+                  <Text style={styles.grupoTexto}> - Costas e Tríceps</Text>
+                </View>
+                <View style={styles.table}>
+                  <View style={styles.tableHeader}>
+                    <Text style={styles.headerCell}>Exercício</Text>
+                    <Text style={styles.headerCell}>Grupo Muscular</Text>
+                    <Text style={styles.headerCell}>Séries</Text>
+                    <Text style={styles.headerCell}>Repetições</Text>
+                  </View>
+                  <View style={styles.tableRow}>
+                    <Text style={styles.tableCell}>Puxada Frontal</Text>
+                    <Text style={styles.tableCell}>Costas</Text>
+                    <Text style={styles.tableCell}>4</Text>
+                    <Text style={styles.tableCell}>10</Text>
+                  </View>
+                  <View style={styles.tableRow}>
+                    <Text style={styles.tableCell}>Tríceps Corda</Text>
+                    <Text style={styles.tableCell}>Tríceps</Text>
+                    <Text style={styles.tableCell}>3</Text>
+                    <Text style={styles.tableCell}>12</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.buttonsContainer}>
+                <TouchableOpacity style={[styles.button, styles.editarButton]}>
+                  <Text style={styles.buttonText}>Editar Ficha</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.excluirButton]}>
+                  <Text style={styles.buttonText}>Excluir Ficha</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  filtroContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#333',
+    borderRadius: 20,
+    padding: 3,
+  },
+  filtroButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    marginHorizontal: 2,
+  },
+  filtroAtivo: {
+    backgroundColor: '#ffc107',
+  },
+  filtroText: {
+    color: '#ccc',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  filtroTextoAtivo: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
   container: {
     flex: 1,
     backgroundColor: '#121212',
