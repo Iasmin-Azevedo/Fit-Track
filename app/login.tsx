@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -14,6 +14,14 @@ import {
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [showError, setShowError] = useState(false);
+  
+  useEffect(() => {
+    const emailValido = email.includes('@') && email.length > 5;
+    const senhaValida = senha.length >= 6;
+    setIsFormValid(emailValido && senhaValida);
+  }, [email, senha]);
 
   return (
     <KeyboardAvoidingView
@@ -50,11 +58,26 @@ export default function Login() {
           onChangeText={setSenha}
         />
 
-        <Link href="/adm" asChild>
-          <TouchableOpacity style={styles.botao}>
+        {isFormValid ? (
+          <Link href="/adm" asChild>
+            <TouchableOpacity style={styles.botao}>
+              <Text style={styles.textoBotao}>Entrar</Text>
+            </TouchableOpacity>
+          </Link>
+        ) : (
+          <TouchableOpacity 
+            style={[styles.botao, styles.botaoDesabilitado]}
+            onPress={() => setShowError(true)}
+          >
             <Text style={styles.textoBotao}>Entrar</Text>
           </TouchableOpacity>
-        </Link>
+        )}
+        
+        {showError && !isFormValid && (
+          <Text style={styles.mensagemErro}>
+            Por favor, insira um email válido e uma senha com pelo menos 6 caracteres
+          </Text>
+        )}
 
         <Link href="/" asChild>
           <TouchableOpacity>
@@ -129,6 +152,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 15,
+  },
+  botaoDesabilitado: {
+    backgroundColor: '#5c5c5c',
+    borderColor: '#444',
+  },
+  mensagemErro: {
+    color: '#ff4d4d',
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 10,
   },
   textoBotao: {
     color: '#000',
